@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="/static/favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LS - Buttplug</title>
+
+<style>
+body { 
+    font-family: Arial, sans-serif; 
+    margin:0; 
+    padding:0; 
+    background:linear-gradient(135deg,#1e1e2f,#12121d); 
+    color:white; 
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    height:100vh; 
+    overflow:hidden; 
+}
+.main-wrapper { 
+    display:flex; 
+    align-items:flex-start; 
+    gap:50px; 
+    position:relative; 
+}
+.com-container, .server-container, .theme-container { 
+    display:flex; 
+    flex-direction:column; 
+    gap:15px; 
+    border-radius:24px; 
+    padding:20px; 
+    background:rgba(255,255,255,0.1); 
+    box-shadow:0 8px 16px rgba(0,0,0,0.2); 
+    backdrop-filter:blur(10px); justify-content:center; 
+    align-items:center; 
+}
+select { 
+    width:120px; 
+    padding:10px; 
+    border-radius:12px; 
+    border:1px solid rgba(255,255,255,0.3); 
+    background:rgba(255,255,255,0.2); 
+    color:white; 
+    text-align:center; 
+    font-weight:bold; 
+}
+select option { 
+    background:#2b2b3f; 
+    color:white; 
+}
+select option:hover { 
+    background:#4c4c6c; 
+}
+input { 
+    width:120px; 
+    padding:10px; 
+    border-radius:12px; 
+    border:1px solid rgba(255,255,255,0.3); 
+    background:rgba(255,255,255,0.1); 
+    color:white; 
+    text-align:center; 
+}
+.ios-switch { 
+    position:relative; 
+    display:inline-block; 
+    width:50px; 
+    height:28px; 
+}
+.ios-switch input { 
+    display:none; 
+}
+.slider-ios { 
+    position:absolute; 
+    cursor:pointer; 
+    top:0; 
+    left:0; 
+    right:0; 
+    bottom:0; 
+    background-color:#ccc; 
+    border-radius:28px; 
+    transition:0.4s; 
+}
+.slider-ios:before { 
+    position:absolute; 
+    content:""; 
+    height:22px; 
+    width:22px; 
+    left:3px; 
+    bottom:3px; 
+    background-color:white; 
+    border-radius:50%; 
+    transition:0.4s; 
+}
+input:checked + .slider-ios:before { 
+    transform:translateX(22px); 
+}
+.container-wrapper { 
+    display:flex; 
+    flex-direction:column; 
+    align-items:center; 
+}
+.container { 
+    display:flex; 
+    flex-direction:column; 
+    align-items:center; 
+    border-radius:30px; 
+    padding:30px; 
+    background:rgba(255,255,255,0.1); 
+    box-shadow:0 8px 16px rgba(0,0,0,0.2); 
+    backdrop-filter:blur(10px); 
+    margin-bottom:20px; 
+    transition:box-shadow 0.2s ease; 
+}
+.vertical-slider { 
+    width:80px; 
+    height:350px; 
+    background:rgba(255,255,255,0.1); 
+    border-radius:24px; 
+    cursor:pointer; 
+    position:relative; 
+    overflow:hidden; 
+    box-shadow:inset 0 4px 8px rgba(0,0,0,0.2); 
+    border:1px solid rgba(255,255,255,0.1); 
+}
+.slider-level { 
+    position:absolute; 
+    bottom:0; 
+    left:0; 
+    width:100%; 
+    background:linear-gradient(135deg,#EE82EE,#FF1493); 
+    transition:height 0.2s ease, background 0.2s ease; 
+    border-radius:24px 24px 0 0; 
+}
+.button-container { 
+    display:flex; 
+    flex-direction:column; 
+    gap:15px; 
+    position:relative; 
+    align-items:center; 
+}
+.random-button { 
+    width:80px; 
+    height:80px; 
+    background:rgba(255,255,255,0.1); 
+    color:white; 
+    border:none; 
+    border-radius:24px; 
+    font-size:14px; 
+    cursor:pointer; 
+    transition:all 0.3s ease; 
+    box-shadow:0 4px 8px rgba(0,0,0,0.2); 
+    text-align:center; 
+    line-height:60px; 
+    backdrop-filter:blur(10px); 
+}
+.random-button:hover { 
+    background: rgba(65, 65, 65, 0.3); 
+}
+.theme-button { 
+    width:25px; 
+    height:25px; 
+    border:none; 
+    border-radius:50%; 
+    cursor:pointer; 
+    transition: transform 0.2s ease; 
+}
+.theme-button:hover { 
+    transform: scale(1.2); 
+    }
+</style>
+</head>
+
+
+<body>
+<div class="main-wrapper">
+    <div style="display:flex; flex-direction:column; gap:20px;">
+        <div class="com-container">
+            <select id="comSelect" onchange="setComPort()">
+                {% for port in com_ports %}
+                    <option value="{{ port }}" {% if port==current_com %}selected{% endif %}>{{ port }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="server-container">
+            <div style="text-align:center; font-weight:bold; margin-bottom:10px;">Lovense Game</div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <span>Start Server</span>
+                <label class="ios-switch">
+                    <input type="checkbox" id="lovenseSwitch">
+                    <span class="slider-ios" id="lovenseSlider"></span>
+                </label>
+            </div>
+            <div>
+                <input type="text" id="hostInput" value="{{ server_host }}" placeholder="HOST" onchange="setServerConfig()">
+            </div>
+            <div style="margin-top:5px;">
+                <input type="number" id="portInput" value="{{ server_port }}" placeholder="PORT" onchange="setServerConfig()">
+            </div>
+        </div>
+        <div class="theme-container">
+            <div style="display:flex; gap:10px; margin-top:5px;">
+                <button class="theme-button" style="background:#EE82EE;" onclick="setTheme('#EE82EE','#FF1493', this)"></button>
+                <button class="theme-button" style="background:#FF4500;" onclick="setTheme('#FF4500','#FFA500', this)"></button>
+                <button class="theme-button" style="background:#1E90FF;" onclick="setTheme('#1E90FF','#00BFFF', this)"></button>
+                <button class="theme-button" style="background:#32CD32;" onclick="setTheme('#32CD32','#7CFC00', this)"></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-wrapper">
+        <div class="container">
+            <div class="vertical-slider" id="powerSlider" onclick="handleSliderClick(event)" onmousedown="startDrag(event)">
+                <div class="slider-level" id="sliderLevel"></div>
+            </div>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="random-button" id="randomButton" onclick="toggleRandomMode()">Random</button>
+        <button class="random-button" id="smoothButton" onclick="toggleSmoothMode()">Random2</button>
+        <button class="random-button" id="random3Button" onclick="toggleRandom3()">Random3</button>
+        <button class="random-button" id="random4Button" onclick="toggleRandom4()">Random4</button>
+    </div>
+</div>
+
+<script>
+let currentLevel=0, isDragging=false, isRandomModeActive=false, isSmoothModeActive=false;
+let randomInterval=null, smoothInterval=null, pulseStartTime=null;
+let themeColor1="{{theme_color1}}", themeColor2="{{theme_color2}}", activeThemeButton=null;
+
+// Паттерны
+let random3Interval=null, random4Interval=null, random5Interval=null;
+let isRandom3Active=false, isRandom4Active=false, isRandom5Active=false;
+
+function setTheme(color1,color2,buttonElem){
+    themeColor1=color1; themeColor2=color2;
+    updateSliderLevel(currentLevel);
+    updateActiveThemeButton(buttonElem);
+    updateSwitchColor();
+    updateRandomButtonsGradient();
+    fetch('/setTheme',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:`color1=${color1}&color2=${color2}`});
+}
+
+function updateActiveThemeButton(buttonElem){
+    if(activeThemeButton) activeThemeButton.style.outline='';
+    activeThemeButton=buttonElem;
+    activeThemeButton.style.outline='2px solid white';
+}
+
+function updateRandomButtonsGradient(){
+    if(isRandomModeActive) document.getElementById('randomButton').style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
+    if(isSmoothModeActive) document.getElementById('smoothButton').style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
+    if(isRandom3Active) document.getElementById('random3Button').style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
+    if(isRandom4Active) document.getElementById('random4Button').style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
+    if(isRandom5Active) document.getElementById('random5Button').style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
+}
+
+function hexToRgb(hex){
+    let bigint=parseInt(hex.replace('#',''),16), r=(bigint>>16)&255, g=(bigint>>8)&255, b=bigint&255;
+    return r+','+g+','+b;
+}
+
+function updateContainerShadow(){
+    const container=document.querySelector('.container'), sliderLevelDiv=document.getElementById('sliderLevel');
+    if(currentLevel===0){ container.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'; sliderLevelDiv.style.boxShadow='none'; pulseStartTime=null; return; }
+    const animate=timestamp=>{
+        if(pulseStartTime===null) pulseStartTime=timestamp;
+        const elapsed=timestamp-pulseStartTime, frequency=0.002*currentLevel, intensity=0.3+0.4*(Math.sin(elapsed*frequency*Math.PI*2)+1)/2;
+        container.style.boxShadow=`0 0 ${10+currentLevel*5}px rgba(${hexToRgb(themeColor1)},${intensity}),0 0 ${20+currentLevel*5}px rgba(${hexToRgb(themeColor2)},${intensity})`;
+        sliderLevelDiv.style.boxShadow=`0 0 ${5+currentLevel*3}px rgba(${hexToRgb(themeColor1)},${intensity}),0 0 ${10+currentLevel*3}px rgba(${hexToRgb(themeColor2)},${intensity})`;
+        if(currentLevel>0) requestAnimationFrame(animate);
+        else { container.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'; sliderLevelDiv.style.boxShadow='none'; pulseStartTime=null; }
+    }
+    requestAnimationFrame(animate);
+}
+
+function updateSliderLevel(level){
+    currentLevel=level;
+    const sliderLevelDiv=document.getElementById('sliderLevel');
+    sliderLevelDiv.style.height=(level/7)*100+'%';
+    sliderLevelDiv.style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
+    updateContainerShadow();
+}
+
+function sendPowerLevel(level){ fetch('/setPowerLevel',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'level='+level}); }
+
+function handleSliderClick(event){ const slider=document.getElementById('powerSlider'), clickY=event.clientY-slider.getBoundingClientRect().top; let level=Math.round((1-clickY/slider.offsetHeight)*7); level=Math.max(0,Math.min(level,7)); updateSliderLevel(level); sendPowerLevel(level); }
+
+function startDrag(event){ isDragging=true; document.addEventListener('mousemove',handleDrag); document.addEventListener('mouseup',stopDrag); handleDrag(event); }
+
+function handleDrag(event){ if(isDragging){ const slider=document.getElementById('powerSlider'), clickY=event.clientY-slider.getBoundingClientRect().top; let level=Math.round((1-clickY/slider.offsetHeight)*7); level=Math.max(0,Math.min(level,7)); updateSliderLevel(level); sendPowerLevel(level); } }
+
+function stopDrag(){ isDragging=false; document.removeEventListener('mousemove',handleDrag); document.removeEventListener('mouseup',stopDrag); }
+
+document.addEventListener('wheel',event=>{ let newLevel=currentLevel; newLevel+=event.deltaY<0?1:-1; newLevel=Math.max(0,Math.min(newLevel,7)); updateSliderLevel(newLevel); sendPowerLevel(newLevel); event.preventDefault(); },{passive:false});
+
+// Паттерн 1
+function toggleRandomMode(){
+    const button=document.getElementById('randomButton');
+    if(isRandomModeActive){ clearInterval(randomInterval); button.style.background='rgba(255,255,255,0.1)'; updateSliderLevel(0); sendPowerLevel(0);}
+    else{ button.style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`; randomInterval=setInterval(()=>{ const randomLevel=Math.floor(Math.random()*8); updateSliderLevel(randomLevel); sendPowerLevel(randomLevel); },1000);}
+    isRandomModeActive=!isRandomModeActive;
+}
+
+// Паттерн 2
+function toggleSmoothMode(){
+    const button=document.getElementById('smoothButton');
+    if(isSmoothModeActive){ clearInterval(smoothInterval); button.style.background='rgba(255,255,255,0.1)'; updateSliderLevel(0); sendPowerLevel(0);}
+    else{ button.style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`; let targetLevel=Math.floor(Math.random()*8); smoothInterval=setInterval(()=>{ if(currentLevel!==targetLevel){ currentLevel+=currentLevel<targetLevel?1:-1; updateSliderLevel(currentLevel); sendPowerLevel(currentLevel); } else targetLevel=Math.floor(Math.random()*8); }, Math.floor(Math.random()*150)+50);}
+    isSmoothModeActive=!isSmoothModeActive;
+}
+
+// Паттерн 3 — быстрые импульсы
+function toggleRandom3(){
+    const button=document.getElementById('random3Button');
+    if(isRandom3Active){ clearInterval(random3Interval); button.style.background='rgba(255,255,255,0.1)'; updateSliderLevel(0); sendPowerLevel(0);}
+    else{ button.style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`; random3Interval=setInterval(()=>{ const randomLevel=Math.floor(Math.random()*8); updateSliderLevel(randomLevel); sendPowerLevel(randomLevel); },200);}
+    isRandom3Active=!isRandom3Active;
+}
+
+
+// Паттерн 4 — резкие случайные скачки с паузами
+function toggleRandom4(){
+    const button=document.getElementById('random4Button');
+    if(isRandom4Active){
+        clearTimeout(random4Interval);
+        button.style.background='rgba(255,255,255,0.1)';
+        updateSliderLevel(0);
+        sendPowerLevel(0);
+    } else {
+        button.style.background=`linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
+
+        let phase=0; // 0-нарастание,1-уменьшение,2-короткие импульсы,3-длинный импульс
+        let level=0, shortCount=0;
+
+        function nextPhase(){
+            switch(phase){
+                case 0: // быстрое плавное нарастание
+                    level++;
+                    if(level>7){ level=7; phase=1; }
+                    updateSliderLevel(level);
+                    sendPowerLevel(level);
+                    random4Interval=setTimeout(nextPhase,100);
+                    break;
+                case 1: // плавное уменьшение
+                    level--;
+                    if(level<0){ level=0; phase=2; shortCount=0; }
+                    updateSliderLevel(level);
+                    sendPowerLevel(level);
+                    random4Interval=setTimeout(nextPhase,100);
+                    break;
+                case 2: // короткие ту-ту-ту импульсы
+                    level=shortCount%2===0 ? 6 : 3; // чередуем высокий и средний уровень
+                    updateSliderLevel(level);
+                    sendPowerLevel(level);
+                    shortCount++;
+                    if(shortCount>=6){ phase=3; level=7; }
+                    random4Interval=setTimeout(nextPhase,150);
+                    break;
+                case 3: // длинный тууууу
+                    updateSliderLevel(level);
+                    sendPowerLevel(level);
+                    random4Interval=setTimeout(()=>{
+                        phase=0;
+                        level=0;
+                        nextPhase();
+                    }, 1000); // длительность длинного импульса
+                    break;
+            }
+        }
+        nextPhase();
+    }
+    isRandom4Active=!isRandom4Active;
+}
+
+
+
+function setComPort(){ const port=document.getElementById('comSelect').value; fetch('/setComPort',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'port='+port}); }
+function toggleLovenseServer(){ const checked=document.getElementById('lovenseSwitch').checked; fetch('/toggleLovenseServer',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'state='+(checked?'start':'stop')}); updateSwitchColor(); }
+function updateSwitchColor(){ const switchElem=document.getElementById('lovenseSlider'); switchElem.style.backgroundColor=document.getElementById('lovenseSwitch').checked?themeColor1:'#ccc'; }
+document.getElementById('lovenseSwitch').addEventListener('change', toggleLovenseServer);
+function setServerConfig(){ const host=document.getElementById('hostInput').value, port=document.getElementById('portInput').value; fetch('/setServerConfig',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'host='+host+'&port='+port}); }
+</script>
+</body>
+</html>
