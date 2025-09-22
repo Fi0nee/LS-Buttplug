@@ -1,0 +1,7 @@
+*.exe
+*.bin
+*.dll
+*.pyd
+__pycache__/
+.vscode/
+Заметки.txt
