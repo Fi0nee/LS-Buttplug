@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <!-- ===========================
+       МЕТАДАННЫЕ СТРАНИЦЫ
+  ============================ -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LS - Buttplug</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png">
+
+  <!-- ===========================
+       СТИЛИ CSS
+  ============================ -->
+  <style>
+    /* Общие стили страницы */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1e1e2f, #12121d);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .main-wrapper {
+      display: flex;
+      align-items: flex-start;
+      gap: 50px;
+      position: relative;
+    }
+
+    /* Контейнеры настроек */
+    .com-container, .server-container, .theme-container, .container {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      border-radius: 24px;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+      justify-content: center;
+      align-items: center;
+      transition: box-shadow .2s ease;
+    }
+
+    select, input {
+      width: 120px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      text-align: center;
+    }
+
+    select option {
+      background: #2b2b3f;
+      color: #fff;
+    }
+
+    select option:hover {
+      background: #4c4c6c;
+    }
+
+    /* Переключатель iOS */
+    .ios-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+    }
+    .ios-switch input { display: none; }
+    .slider-ios {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #ccc;
+      border-radius: 28px;
+      transition: .4s;
+    }
+    .slider-ios:before {
+      position: absolute;
+      content: "";
+      height: 22px; width: 22px;
+      left: 3px; bottom: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .4s;
+    }
+    input:checked + .slider-ios:before { transform: translateX(22px); }
+
+    /* Вертикальный слайдер */
+    .container-wrapper { display: flex; flex-direction: column; align-items: center; }
+    .vertical-slider {
+      width: 80px; height: 350px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 24px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 4px 8px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .slider-level {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      background: linear-gradient(135deg,#EE82EE,#FF1493);
+      transition: height .2s, background .2s;
+      border-radius: 24px 24px 0 0;
+    }
+
+    /* Кнопки Random и темы */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      align-items: center;
+    }
+    .random-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 24px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .random-icon:hover {transform: scale(1.05);}
+
+    .theme-button {
+      width: 25px; height: 25px;
+      border: none; border-radius: 50%;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    .theme-button:hover { transform: scale(1.2); }
+
+    /* Контейнер Keyboard Mode */
+    #rightContainer {
+      width: 200px; height: 365px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    .km-row { display: flex; gap: 8px; align-items: center; }
+    .km-add {
+      padding: 12px 8px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      cursor: pointer;
+    }
+    .km-list {
+      margin-top: 8px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .km-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.3);
+        padding: 0 10px 0 10px; /* отступ слева и справа */
+    }
+    .km-del {
+      background: #2b2b3f;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      width: 28px; height: 28px;
+      cursor: pointer;
+    }
+    .km-input {
+        width: 80px;
+    }
+    .km-title { font-weight: 600; font-size: 16px; }
+    .km-small { font-size: 12px; color: rgba(255,255,255,0.7); }
+  </style>
+</head>
+
+<body>
+  <!-- ===========================
+       ОСНОВНОЙ КОНТЕЙНЕР
+  ============================ -->
+  <div class="main-wrapper">
+
+    <!-- ===========================
+         БЛОК НАСТРОЕК COM / СЕРВЕР / ТЕМА
+    ============================ -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <!-- COM-порт -->
+      <div class="com-container">
+        <select id="comSelect" onchange="setComPort()">
+          {% for port in com_ports %}
+            <option value="{{ port }}" {% if port==current_com %}selected{% endif %}>{{ port }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Lovense сервер -->
+      <div class="server-container">
+        <div style="text-align:center;font-weight:bold;margin-bottom:10px">Lovense Game</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span>Start Server</span>
+          <label class="ios-switch">
+            <input type="checkbox" id="lovenseSwitch">
+            <span class="slider-ios" id="lovenseSlider"></span>
+          </label>
+        </div>
+        <div><input type="text" id="hostInput" value="{{ server_host }}" placeholder="HOST" onchange="setServerConfig()"></div>
+        <div style="margin-top:5px"><input type="number" id="portInput" value="{{ server_port }}" placeholder="PORT" onchange="setServerConfig()"></div>
+      </div>
+
+      <!-- Выбор темы -->
+      <div class="theme-container">
+        <div style="display:flex;gap:10px;margin-top:5px">
+          <button class="theme-button" style="background:#EE82EE" onclick="setTheme('#EE82EE','#FF1493',this)"></button>
+          <button class="theme-button" style="background:#FF4500" onclick="setTheme('#FF4500','#FFA500',this)"></button>
+          <button class="theme-button" style="background:#1E90FF" onclick="setTheme('#1E90FF','#00BFFF',this)"></button>
+          <button class="theme-button" style="background:#32CD32" onclick="setTheme('#32CD32','#7CFC00',this)"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===========================
+         ВЕРТИКАЛЬНЫЙ СЛАЙДЕР
+    ============================ -->
+    <div class="container-wrapper">
+      <div class="container">
+        <div class="vertical-slider" id="powerSlider" onclick="handleSliderClick(event)" onmousedown="startDrag(event)">
+          <div class="slider-level" id="sliderLevel"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===========================
+         КНОПКИ RANDOM И KEYBOARD MODE
+    ============================ -->
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <!-- Кнопки Random -->
+      <div class="button-container">
+        <img src="/static/rand1.png" id="randomButton" class="random-icon" onclick="toggleRandom()" alt="Random1">
+        <img src="/static/rand2.png" id="random2Button" class="random-icon" onclick="toggleRandom2()" alt="Random2">
+        <img src="/static/rand3.png" id="random3Button" class="random-icon" onclick="toggleRandom3()" alt="Random3">
+        <img src="/static/rand4.png" id="random4Button" class="random-icon" onclick="toggleRandom4()" alt="Random4">
+      </div>
+
+      <!-- Keyboard Mode -->
+      <div id="rightContainer" aria-label="Keyboard container">
+        <div class="km-row" style="justify-content:space-between;align-items:center">
+          <div class="km-title">Keyboard</div>
+          <label class="ios-switch" title="Enable keyboard mode">
+            <input type="checkbox" id="kmToggle">
+            <span class="slider-ios" id="kmSlider"></span>
+          </label>
+        </div>
+
+        <div class="km-row">
+          <input id="kmKey" class="km-input" placeholder="Key" maxlength="1" />
+          <select id="kmLevel" class="km-select">
+            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option>
+          </select>
+          <button class="km-add" id="kmAddBtn">Add</button>
+        </div>
+
+        <div class="km-small"></div>
+        <div id="kmList" class="km-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===========================
+       JAVASCRIPT
+       Управление слайдером, Random режимами и Keyboard Mode
+  ============================ -->
+  <script>
+    // ===========================
+    // Основной слайдер
+    // ===========================
+    let currentLevel = 0;
+    let isDragging = false;
+    let themeColor1 = "{{theme_color1}}";
+    let themeColor2 = "{{theme_color2}}";
+    let pulseStart = null;
+
+    function updateSliderVisual(n){
+      currentLevel = n;
+      const el = document.getElementById('sliderLevel');
+      el.style.height = (n/7*100) + '%';
+      el.style.background = `linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
+      animateGlow();
+    }
+
+    function sendPowerLevel(l){
+      fetch('/setPowerLevel', {
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:'level='+l
+      }).catch(()=>{});
+    }
+
+    function setSliderAndSend(l){
+      updateSliderVisual(l);
+      sendPowerLevel(l);
+    }
+
+    function handleSliderClick(e){
+      const s = document.getElementById('powerSlider');
+      const y = e.clientY - s.getBoundingClientRect().top;
+      let lvl = Math.round((1 - y / s.offsetHeight) * 7);
+      lvl = Math.max(0, Math.min(7, lvl));
+      setSliderAndSend(lvl);
+    }
+
+    function startDrag(e){
+      isDragging = true;
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup', stopDrag);
+      onDrag(e);
+    }
+
+    function onDrag(e){
+      if(!isDragging) return;
+      const s = document.getElementById('powerSlider');
+      const y = e.clientY - s.getBoundingClientRect().top;
+      let lvl = Math.round((1 - y / s.offsetHeight) * 7);
+      lvl = Math.max(0, Math.min(7, lvl));
+      setSliderAndSend(lvl);
+    }
+
+    function stopDrag(){
+      isDragging = false;
+      document.removeEventListener('mousemove', onDrag);
+      document.removeEventListener('mouseup', stopDrag);
+    }
+
+    function animateGlow(){
+      const c = document.querySelector('.container');
+      const s = document.getElementById('sliderLevel');
+      if(currentLevel === 0){ 
+        c.style.boxShadow = '0 8px 16px rgba(0,0,0,0.2)'; 
+        s.style.boxShadow = 'none'; 
+        pulseStart = null; 
+        return; 
+      }
+      let raf;
+      const step = (t)=>{
+        if(pulseStart === null) pulseStart = t;
+        const dt = t - pulseStart;
+        const f = .002 * currentLevel;
+        const intensity = .3 + .4 * (Math.sin(dt * f * 2 * Math.PI) + 1) / 2;
+        c.style.boxShadow = `0 0 ${10 + currentLevel*5}px rgba(${hexRgb(themeColor1)},${intensity}), 0 0 ${20 + currentLevel*5}px rgba(${hexRgb(themeColor2)},${intensity})`;
+        s.style.boxShadow = `0 0 ${5 + currentLevel*3}px rgba(${hexRgb(themeColor1)},${intensity}), 0 0 ${10 + currentLevel*3}px rgba(${hexRgb(themeColor2)},${intensity})`;
+        if(currentLevel > 0) raf = requestAnimationFrame(step);
+        else { cancelAnimationFrame(raf); pulseStart = null; }
+      };
+      requestAnimationFrame(step);
+    }
+
+    function hexRgb(hex){
+      const n = parseInt(hex.replace('#',''),16);
+      return `${(n>>16)&255},${(n>>8)&255},${n&255}`;
+    }
+
+    // ===========================
+    // Тема и COM порт
+    // ===========================
+    let activeThemeBtn = null;
+    function setTheme(c1, c2, btn){
+        themeColor1 = c1;
+        themeColor2 = c2;
+
+        // Обновляем слайдер
+        updateSliderVisual(currentLevel);
+
+        // Обновляем Random кнопки
+        if (randActive) setRandomButtonActive(document.getElementById('randomButton'), true);
+        if (smoothActive) setRandomButtonActive(document.getElementById('random2Button'), true);
+        if (rand3Active) setRandomButtonActive(document.getElementById('random3Button'), true);
+        if (rand4Active) setRandomButtonActive(document.getElementById('random4Button'), true);
+
+        // Keyboard slider
+        if(km.enabled) document.getElementById('kmSlider').style.backgroundColor = themeColor1;
+
+        // Lovense slider
+        const lovenseChecked = document.getElementById('lovenseSwitch').checked;
+        document.getElementById('lovenseSlider').style.backgroundColor = lovenseChecked ? themeColor1 : '#ccc';
+
+        // Outline активной темы
+        if(activeThemeBtn) activeThemeBtn.style.outline = '';
+        activeThemeBtn = btn;
+        activeThemeBtn.style.outline = '2px solid white';
+
+        // Отправка на сервер
+        fetch('/setTheme', {
+            method:'POST',
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            body:`color1=${c1}&color2=${c2}`
+        }).catch(()=>{});
+    }
+
+
+
+    function setComPort(){ 
+      fetch('/setComPort',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:'port='+document.getElementById('comSelect').value
+      }).catch(()=>{})
+    }
+
+    function toggleLovenseServer(){ 
+      const st = document.getElementById('lovenseSwitch').checked; 
+      fetch('/toggleLovenseServer',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:'state='+(st?'start':'stop')
+      }).catch(()=>{}); 
+      document.getElementById('lovenseSlider').style.backgroundColor = st ? themeColor1 : '#ccc'; 
+    }
+    document.getElementById('lovenseSwitch').addEventListener('change', toggleLovenseServer);
+
+    function setServerConfig(){ 
+      const h=document.getElementById('hostInput').value, p=document.getElementById('portInput').value;
+      fetch('/setServerConfig',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:`host=${h}&port=${p}`}).catch(()=>{});
+    }
+
+    // ===========================
+    // Управление Random  режимами
+    // ===========================
+    let randActive=false, smoothActive=false, rand3Active=false, rand4Active=false;
+    let randTimer=null, smoothTimer=null, rand3Timer=null, rand4Timer=null;
+
+    function setRandomButtonActive(btn, active) {
+        if (active) {
+            btn.style.boxShadow = `0 0 20px ${themeColor1}, 0 0 40px ${themeColor2}`;
+        } else {
+            btn.style.boxShadow = "";
+        }
+    }
+
+    function toggleRandom(){
+      const b = document.getElementById('randomButton');
+      if(randActive){
+        clearInterval(randTimer);
+        b.classList.remove('active');
+        setRandomButtonActive(b, false);
+        setSliderAndSend(0);
+      } else {
+        b.classList.add('active');
+        setRandomButtonActive(b, true);
+        randTimer = setInterval(()=>{ const val = Math.floor(Math.random()*8); setSliderAndSend(val); }, 1000);
+      }
+      randActive = !randActive;
+    }
+
+    function toggleRandom2(){
+      const b = document.getElementById('random2Button');
+      if(smoothActive){
+        clearInterval(smoothTimer);
+        b.classList.remove('active');
+        setRandomButtonActive(b, false);
+        setSliderAndSend(0);
+      } else {
+        b.classList.add('active');
+        setRandomButtonActive(b, true);
+        let target = Math.floor(Math.random()*8);
+        smoothTimer = setInterval(()=>{
+          if(currentLevel !== target){
+            currentLevel += currentLevel < target ? 1 : -1;
+            setSliderAndSend(currentLevel);
+          } else target = Math.floor(Math.random()*8);
+        }, Math.floor(Math.random()*150)+50);
+      }
+      smoothActive = !smoothActive;
+    }
+
+    function toggleRandom3(){
+      const b = document.getElementById('random3Button');
+      if(rand3Active){
+        clearInterval(rand3Timer);
+        b.classList.remove('active');
+        setRandomButtonActive(b, false);
+        setSliderAndSend(0);
+      } else {
+        b.classList.add('active');
+        setRandomButtonActive(b, true);
+        rand3Timer = setInterval(()=>{ const v = Math.floor(Math.random()*8); setSliderAndSend(v); }, 200);
+      }
+      rand3Active = !rand3Active;
+    }
+
+    function toggleRandom4(){
+      const b = document.getElementById('random4Button');
+      if(rand4Active){
+        clearTimeout(rand4Timer);
+        b.classList.remove('active');
+        setRandomButtonActive(b, false);
+        setSliderAndSend(0);
+      } else {
+        b.classList.add('active');
+        setRandomButtonActive(b, true);
+        let phase = 0, v = 0, cnt = 0;
+        function step(){
+          switch(phase){
+            case 0: v++; if(v>7){v=7;phase=1} setSliderAndSend(v); rand4Timer = setTimeout(step,100); break;
+            case 1: v--; if(v<0){v=0;phase=2;cnt=0} setSliderAndSend(v); rand4Timer = setTimeout(step,100); break;
+            case 2: v = (cnt%2===0)?6:3; setSliderAndSend(v); cnt++; if(cnt>=6){phase=3;v=7} rand4Timer = setTimeout(step,150); break;
+            case 3: setSliderAndSend(v); rand4Timer = setTimeout(()=>{phase=0;v=0;step()},1000); break;
+          }
+        }
+        step();
+      }
+      rand4Active = !rand4Active;
+    }
+
+    // ===========================
+    // Keyboard Mode
+    // ===========================
+    const km = {
+      enabled: false,
+      bindings: {},
+      rootToggle: document.getElementById('kmToggle'),
+      listEl: document.getElementById('kmList'),
+      keyInput: document.getElementById('kmKey'),
+      levelSelect: document.getElementById('kmLevel'),
+      addBtn: document.getElementById('kmAddBtn'),
+      sliderResetOnKeyUp: true
+    };
+
+    km.rootToggle.addEventListener('change', ()=>{
+      km.enabled = km.rootToggle.checked;
+      document.getElementById('kmSlider').style.backgroundColor = km.enabled ? themeColor1 : '#ccc';
+      fetch('/toggleKeyboardMode', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'state='+(km.enabled?'on':'off')}).catch(()=>{});
+    });
+
+    km.addBtn.addEventListener('click', ()=>{
+      const raw = km.keyInput.value.trim();
+      if(!raw) return alert('Select key');
+      const key = raw[0].toLowerCase();
+      const lvl = parseInt(km.levelSelect.value,10);
+      if(Number.isNaN(lvl) || lvl<0 || lvl>7) return alert('Incorrect level');
+      km.bindings[key] = lvl;
+      km.keyInput.value = '';
+      renderKmList();
+      fetch('/addKeyBinding', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:`key=${encodeURIComponent(key)}&level=${lvl}`}).catch(()=>{});
+    });
+
+    function renderKmList(){
+      const container = km.listEl;
+      container.innerHTML = '';
+      const entries = Object.entries(km.bindings);
+      if(entries.length === 0){
+        const hint = document.createElement('div');
+        hint.className = 'km-small';
+        hint.textContent = 'No bindings yet';
+        container.appendChild(hint);
+        return;
+      }
+      entries.forEach(([k,v])=>{
+        const item = document.createElement('div');
+        item.className = 'km-item';
+        item.innerHTML = `<div><strong>${k.toUpperCase()}</strong> → <span style="margin-left:8px">${v}</span></div>`;
+        const del = document.createElement('button');
+        del.className = 'km-del';
+        del.textContent = '×';
+        del.title = 'Remove';
+        del.addEventListener('click', ()=>{ 
+          delete km.bindings[k]; 
+          renderKmList(); 
+          fetch('/removeKeyBinding',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'key='+encodeURIComponent(k)}).catch(()=>{}); 
+        });
+        item.appendChild(del);
+        container.appendChild(item);
+      });
+    }
+    renderKmList();
+
+    let kmPressed = {};
+
+    document.addEventListener('keydown', ev=>{
+      if(!km.enabled) return;
+      const k = ev.key.toLowerCase();
+      if(!(k in km.bindings)) return;
+      if(kmPressed[k]) return;
+      kmPressed[k] = true;
+      const level = km.bindings[k];
+      setSliderAndSend(level);
+      fetch('/keyPress', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:`key=${encodeURIComponent(ev.key)}&action=down&level=${level}`}).catch(()=>{});
+    });
+
+    document.addEventListener('keyup', ev=>{
+      if(!km.enabled) return;
+      const k = ev.key.toLowerCase();
+      if(!(k in km.bindings)) return;
+      kmPressed[k] = false;
+      if(km.sliderResetOnKeyUp) setSliderAndSend(0);
+      fetch('/keyPress', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:`key=${encodeURIComponent(ev.key)}&action=up`}).catch(()=>{});
+    });
+
+    // ===========================
+    // Управление колесом мыши
+    // ===========================
+    document.addEventListener('wheel', e=>{
+      let l = currentLevel;
+      l += e.deltaY < 0 ? 1 : -1;
+      l = Math.max(0, Math.min(7, l));
+      setSliderAndSend(l);
+      e.preventDefault();
+    }, {passive:false});
+  </script>
+
+</body>
+</html>
