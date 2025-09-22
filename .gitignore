@@ -4,4 +4,4 @@
 *.pyd
 __pycache__/
 .vscode/
-Заметки.txt
+Notes.txt
