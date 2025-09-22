@@ -113,7 +113,6 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 - ESP32 flashing via Web interface  
 - .bin firmware files for ESP32s2/3 (You can flash/build yourself using PlatformIO)  
 - Extended patterns or record/playback  
-- Binding vibrations to keyboard keys (e.g. W.A.S.D for gaming variety)  
 - Scheduled vibration  
 
 ---
