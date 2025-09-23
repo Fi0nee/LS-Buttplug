@@ -5,7 +5,7 @@
 // Инициализация Bluetooth
 inline void bluetooth_service_init() {
     // Initialize the NimBLE device
-    NimBLEDevice::init("LVS-Lush01");
+    NimBLEDevice::init("LVS-Lush11");
 
     // Create a new server
     NimBLEServer *pServer = NimBLEDevice::createServer();

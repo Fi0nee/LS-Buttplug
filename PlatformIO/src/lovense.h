@@ -8,7 +8,7 @@
 #include <esp_system.h>  // Для esp_read_mac
 
 // ---------------- Device definitions ----------------
-#define DEVICE_NAME     "LVS-Lush01"
+#define DEVICE_NAME     "LVS-Lush11"
 #define DEVICE_SERVICE  "45440001-0023-4BD4-BBD5-A6920E4C5653"
 #define DEVICE_CHAR_RX  "45440002-0023-4BD4-BBD5-A6920E4C5653"
 #define DEVICE_CHAR_TX  "45440003-0023-4BD4-BBD5-A6920E4C5653"
@@ -64,8 +64,8 @@ inline std::string generate_response(const std::string& command) {
 }
 
 inline std::string get_device_info() {
-    std::string firmwareVersion = "02";
-    std::string deviceType = "Lush";
+    std::string firmwareVersion = "11";
+    std::string deviceType = "S";
 
     uint8_t mac[6];
     esp_read_mac(mac, ESP_MAC_WIFI_STA);
