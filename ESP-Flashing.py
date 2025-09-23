@@ -18,7 +18,6 @@ class ESP32Flasher:
             "esp32": "ESP32",
             "esp32c3": "ESP32c3",
             "esp32-c3": "ESP32c3",
-            "seeed_xiao_esp32c3": "seeed_xiao_esp32c3",
         }
 
         # standard binary addresses
@@ -91,6 +90,7 @@ class ESP32Flasher:
             print("\n❌ Flashing failed!")
             return False
 
+
 def try_port(p):
     try:
         flasher = ESP32Flasher()
@@ -98,6 +98,7 @@ def try_port(p):
         return p.device, chip
     except Exception:
         return p.device, None
+
 
 def auto_choose_port():
     ports = list(serial.tools.list_ports.comports())
@@ -121,10 +122,9 @@ def auto_choose_port():
     sys.exit(1)
 
 
-
 if __name__ == "__main__":
     port = auto_choose_port()
     flasher = ESP32Flasher()
     flasher.flash(port)
-    
+
     input("\nPress Enter to exit...")
