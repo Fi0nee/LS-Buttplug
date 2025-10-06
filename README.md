@@ -25,6 +25,12 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 
 ### 1. Preparing ESP32  
 # Go to [Releases](https://github.com/Fi0nee/LS-Buttplug/releases) and download the latest version
+
+> ⚠️ **Note about antivirus false positive**  
+> Some antivirus programs (including Windows Defender) may incorrectly flag `LS-Buttplug.zip` or `LS-Buttplug.exe` as a virus.  
+> This is a **false positive** caused by the packaging method used to bundle the executable.  
+> The files are safe to use — you can verify by building the project yourself from the source code.
+
 1. Download the `.zip` archive and unpack it on your PC.  
 2. Flash the ESP32:  
 
