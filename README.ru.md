@@ -1,4 +1,7 @@
-[English](README.md) | [Русский](README.ru.md)
+<p align="center">
+   <a href="README.md"><img src="https://img.shields.io/badge/English-EN-blue?style=for-the-badge&logo=github" alt="English"></a>
+   <a href="README.ru.md"><img src="https://img.shields.io/badge/Русский-RU-brightgreen?style=for-the-badge&logo=github" alt="Русский"></a>
+</p>
 
 
 # LoveSpouse|Buttplug.io — Управление вибрациями китайских игрушек посредством ESP32 
