@@ -16,16 +16,16 @@ static uint8_t _intensity_value = 0;
 static uint8_t _last_intensity_value = 255;
 static bool _stopping = false;
 
-// ---------------- Новый массив уровней вибрации ----------------
+// ---------------- HEX ----------------
 static uint8_t manufacturerDataList[][MANUFACTURER_DATA_LENGTH] = {
     {MANUFACTURER_DATA_PREFIX, 0xE5, 0x00, 0x00}, // Stop
-    {MANUFACTURER_DATA_PREFIX, 0xF4, 0x00, 0x00}, // Low 1
-    {MANUFACTURER_DATA_PREFIX, 0xF7, 0x00, 0x00}, // Low 2
-    {MANUFACTURER_DATA_PREFIX, 0xF6, 0x00, 0x00}, // Low 3
-    {MANUFACTURER_DATA_PREFIX, 0xF1, 0x00, 0x00}, // Low 4
-    {MANUFACTURER_DATA_PREFIX, 0xF3, 0x00, 0x00}, // Low 5
-    {MANUFACTURER_DATA_PREFIX, 0xE7, 0x00, 0x00}, // Medium
-    {MANUFACTURER_DATA_PREFIX, 0xE6, 0x00, 0x00}, // High
+    {MANUFACTURER_DATA_PREFIX, 0xF4, 0x00, 0x00}, // L1
+    {MANUFACTURER_DATA_PREFIX, 0xF7, 0x00, 0x00}, // L2
+    {MANUFACTURER_DATA_PREFIX, 0xF6, 0x00, 0x00}, // L3
+    {MANUFACTURER_DATA_PREFIX, 0xF1, 0x00, 0x00}, // L4
+    {MANUFACTURER_DATA_PREFIX, 0xF3, 0x00, 0x00}, // L5
+    {MANUFACTURER_DATA_PREFIX, 0xE7, 0x00, 0x00}, // L6
+    {MANUFACTURER_DATA_PREFIX, 0xE6, 0x00, 0x00}, // L7
 };
 
 // ---------------- Установка manufacturer data и реклама ----------------
