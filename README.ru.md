@@ -138,7 +138,3 @@
 - ☕USDT (TRC20): `TBG5q6y9f8EE7p8e9naaQKP2UgvjJD5tLT`
 - ☕TON: `UQC-FEFn0TojwtGXogMJrnde7TZtJyNZNGa5awliEl03_off`
 ---
-
-## 📄 Лицензия
-MIT License © 2025
-
