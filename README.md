@@ -136,5 +136,4 @@ If you like the project and want to support development:
 
 ---
 
-## 📄 License
-MIT License © 2025
+
