@@ -5,7 +5,7 @@
 #include "freertos/task.h"
 #include "LS.h"
 #include <string>
-#include <esp_system.h>  // Для esp_read_mac
+#include <esp_system.h>
 
 // ---------------- Device definitions ----------------
 #define DEVICE_NAME     "LVS-Lush11"

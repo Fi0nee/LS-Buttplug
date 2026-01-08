@@ -4,7 +4,6 @@
 </p>
 
 
-
 # LoveSpouse|Buttplug.io — Control of Chinese Toys Vibrations via ESP32
 
 The **LS-Buttplug** project is designed to control vibrations of cheap Chinese sex toys that work with the **MuSe / Love Spouse** app.  
@@ -30,38 +29,16 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 ### 1. Preparing ESP32  
 # Go to [Releases](https://github.com/Fi0nee/LS-Buttplug/releases) and download the latest version
 
-> ⚠️ **Note about antivirus false positive**  
-> Some antivirus programs (including Windows Defender) may incorrectly flag `LS-Buttplug.zip` or `LS-Buttplug.exe` as a virus.  
-> This is a **false positive** caused by the packaging method used to bundle the executable.  
-> The files are safe to use — you can verify by building the project yourself from the source code.
-
 1. Download the `.zip` archive and unpack it on your PC.  
 2. Flash the ESP32:  
 
 **PlatformIO**  
 - Open the `PlatformIO` folder in PlatformIO  
 - Select your board in platformio.ini or add a new one  
-
-**esptool.py**  
-- Install `esptool`:
-  ```bash
-  pip install esptool
-  ```
-- Select the folder for your board:
-   ```bash
-   cd ESP/ESP32
-   ```
-- Flash (replace COM1 with your port):
-   ```bash
-   esptool --chip auto --port COM1 --baud 460800 write_flash -z    0x1000 bootloader.bin    0x8000 partitions.bin    0x10000 firmware.bin
-   ```
-**If you don’t have Python you can flash using Flasher.exe**  
-- Connect the board to your PC  
-- Run `ESP-Flashing.exe`  
-- The board will be flashed automatically  
+- Flash the ESP32
 
 ### 2. Running LS_Buttplug
-1. Run `LS-Buttplug.exe` or `LS-Buttplug.py`  
+1. Run `LS-Buttplug.py`  
    - A Web page will open automatically or go to [http://localhost:5000](http://localhost:5000)  
 2. Select the COM port where your ESP32 is connected  
 3. Control:  
@@ -84,13 +61,13 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 
 ### 3. Intiface Central
 ![Intiface Central](img/IC.png)
-- Running `LS-Buttplug.py`/`LS-Buttplug.exe` is not required  
+- Running `LS-Buttplug.py` is not required  
 - Launch Intiface Central on PC or mobile and scan for devices — the device will appear as Lovense  
 - Run a game or app with Buttplug.io support  
 - Enjoy control  
 
 ### 4. XToys.App
-- Running `LS-Buttplug.py`/`LS-Buttplug.exe` is not required  
+- Running `LS-Buttplug.py` is not required  
 - Choose any Lovense Vibrator device  
 - Connect and enjoy  
 
@@ -121,7 +98,6 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 ## 🚀 Future Plans
 - Support for dual-channel devices (vibration/rotation, vibration/color)  
 - ESP32 flashing via Web interface  
-- .bin firmware files for ESP32s2/3 (You can flash/build yourself using PlatformIO)  
 - Extended patterns or record/playback  
 - Scheduled vibration  
 
