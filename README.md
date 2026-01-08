@@ -1,10 +1,18 @@
+<h1 align="center">LS-Buttplug</h1>
+<p align="center">
+  Control of Chinese Toys Vibrations via ESP32
+</p>
+
+<p align="center">
+  <a href="https://github.com/Fi0nee/LS-Buttplug/releases">
+    <img src="https://img.shields.io/badge/⬇ Скачать-Releases-ff4d4d?style=for-the-badge">
+  </a>
+</p>
+
 <p align="center">
    <a href="README.md"><img src="https://img.shields.io/badge/English-EN-blue?style=for-the-badge&logo=github" alt="English"></a>
    <a href="README.ru.md"><img src="https://img.shields.io/badge/Русский-RU-brightgreen?style=for-the-badge&logo=github" alt="Русский"></a>
 </p>
-
-
-# LoveSpouse|Buttplug.io — Control of Chinese Toys Vibrations via ESP32
 
 The **LS-Buttplug** project is designed to control vibrations of cheap Chinese sex toys that work with the **MuSe / Love Spouse** app.  
 The goal of the project is to expand the functionality of available devices, since most cheap toys have limited software, and the **Love Spouse** app works with restrictions and failures in some regions.
@@ -27,7 +35,6 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 ## 🛠 Installation and Setup
 
 ### 1. Preparing ESP32  
-# Go to [Releases](https://github.com/Fi0nee/LS-Buttplug/releases) and download the latest version
 
 1. Download the `.zip` archive and unpack it on your PC.  
 2. Flash the ESP32:  
@@ -91,7 +98,8 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 - There are errors in Intiface Central when connecting the device, but they do not affect functionality.  
 - Small vibration delays may occur when working with Intiface Central.  
 - Works with Lovense Remote app only on Android in offline mode. Sometimes works online only if you first disable internet — connect the device — then enable internet. Your toy may be disconnected at any time.  
-- On iOS the toy is not detected.  
+- On iOS the toy is not detected. 
+- If the device does not respond to commands, use the additional firmware to determine the HEX values [BLE-HEX-Picker](https://github.com/Fi0nee/BLE-HEX-Picker)
 
 ---
 
