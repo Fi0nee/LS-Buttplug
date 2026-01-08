@@ -1,4 +1,3 @@
 Flask
 pyserial
 keyboard
-esptool
