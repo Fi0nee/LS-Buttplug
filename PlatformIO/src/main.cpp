@@ -8,18 +8,15 @@
 void setup() {
     Serial.begin(115200);
 
-    // Полная очистка NVS перед инициализацией BLE
     nvs_flash_erase();
     nvs_flash_init();
-    delay(10);
+    delay(100);
 
-    bluetooth_service_init();
+    NimBLEDevice::init(DEVICE_NAME);
     lovense_init();
+
     muse_init();
     muse_start();
-
-    NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
-    pAdvertising->setName(DEVICE_NAME);
 
     bluetooth_service_start();
 }

@@ -16,8 +16,6 @@
 // ---------------- BLE Service functions ----------------
 inline void bluetooth_service_init() {
     NimBLEDevice::init(DEVICE_NAME);
-
-    NimBLEServer *pServer = NimBLEDevice::createServer();
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
     pAdvertising->enableScanResponse(true);
     pAdvertising->setMinInterval(0x12);
@@ -25,12 +23,12 @@ inline void bluetooth_service_init() {
 }
 
 inline void bluetooth_service_start() {
-    NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
-    pAdvertising->reset();
-    pAdvertising->setName(DEVICE_NAME);
-    pAdvertising->addServiceUUID(DEVICE_SERVICE);
+    NimBLEAdvertising* advert = NimBLEDevice::getAdvertising();
+    advert->reset();
+    advert->addServiceUUID(DEVICE_SERVICE);
     NimBLEDevice::startAdvertising();
 }
+
 inline void bluetooth_service_stop() {NimBLEDevice::stopAdvertising();}
 inline void bluetooth_service_set_battery_level(float battery_voltage) {}
 inline void add_user_events_characteristic(NimBLEService *pService) {}
@@ -131,5 +129,4 @@ inline void lovense_init() {
     service->start();
     NimBLEAdvertising* advert = NimBLEDevice::getAdvertising();
     advert->addServiceUUID(DEVICE_SERVICE);
-    advert->setName(DEVICE_NAME);
 }
