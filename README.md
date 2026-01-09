@@ -5,7 +5,7 @@
 
 <p align="center">
   <a href="https://github.com/Fi0nee/LS-Buttplug/releases">
-    <img src="https://img.shields.io/badge/⬇ Скачать-Releases-ff4d4d?style=for-the-badge">
+    <img src="https://img.shields.io/badge/⬇ Download-Releases-ff4d4d?style=for-the-badge">
   </a>
 </p>
 
@@ -86,7 +86,7 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 - **Helping the Hotties**  
 - **Innocent Witches**  
 
-### Intiface Central (ver. 2.6.7)
+### Intiface Central (ver. 2.6.8)
 - **Stardew Valley** — [Buttplug Valley (GitHub)](https://github.com/DryIcedTea/Buttplug-Valley) | [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/19336)  
 - **Terraria** — [Viberaria (GitHub)](https://github.com/notasuka/Viberaria)  
 - **Celeste** — [CelestePlug (GameBanana)](https://gamebanana.com/mods/554604)  

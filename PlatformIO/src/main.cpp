@@ -1,16 +1,26 @@
 #include <Arduino.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "ble.h"
-#include "LS.h"
 #include "lovense.h"
+#include "LS.h"
+#include "nvs_flash.h"
 
 void setup() {
     Serial.begin(115200);
+
+    // Полная очистка NVS перед инициализацией BLE
+    nvs_flash_erase();
+    nvs_flash_init();
+    delay(10);
+
     bluetooth_service_init();
     lovense_init();
     muse_init();
     muse_start();
+
+    NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+    pAdvertising->setName(DEVICE_NAME);
+
     bluetooth_service_start();
 }
 

@@ -1,7 +1,4 @@
-*.exe
-*.bin
-*.dll
-*.pyd
+.venv
 __pycache__/
 .vscode/
 Documentation

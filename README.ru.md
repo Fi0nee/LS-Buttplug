@@ -86,7 +86,7 @@
 - **Helping the Hotties**  
 - **Innocent Witches**  
 
-### Intiface Central (ver. 2.6.7)
+### Intiface Central (ver. 2.6.8)
 - **Stardew Valley** — [Buttplug Valley (GitHub)](https://github.com/DryIcedTea/Buttplug-Valley) | [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/19336)  
 - **Terraria** — [Viberaria (GitHub)](https://github.com/notasuka/Viberaria)  
 - **Celeste** — [CelestePlug (GameBanana)](https://gamebanana.com/mods/554604)  

@@ -148,10 +148,21 @@ def start_serial():
     global ser
     try:
         if SERIAL_PORT:
-            ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1, write_timeout=2)
+            ser = serial.Serial(
+                SERIAL_PORT,
+                BAUD_RATE,
+                timeout=1,
+                write_timeout=2
+            )
+
+            ser.setDTR(False)
+            ser.setRTS(False)
+
+            time.sleep(0.1)
             print(f"Connected to {SERIAL_PORT}")
     except Exception as e:
         print(f"Error opening serial port: {e}")
+
 
 # ====== Run Server ======
 if __name__ == '__main__':

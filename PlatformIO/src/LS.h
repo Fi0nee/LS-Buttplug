@@ -28,7 +28,9 @@ static constexpr uint32_t CHANNELS[] = {
 // ---------------- Set manufacturer data ----------------
 inline void set_manufacturer_data(uint8_t index) {
     NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
-    pAdvertising->stop();
+
+    // Stop advertising before changing data
+    pAdvertising->reset();
 
     uint8_t data[MANUFACTURER_DATA_LENGTH];
     memcpy(data, MANUFACTURER_DATA_PREFIX, sizeof(MANUFACTURER_DATA_PREFIX));
@@ -38,9 +40,12 @@ inline void set_manufacturer_data(uint8_t index) {
     data[9]  = (channel >> 8) & 0xFF;
     data[10] = channel & 0xFF;
 
-    pAdvertising->setManufacturerData(std::string((char*)&MANUFACTURER_ID, 2) +
-                                      std::string((char*)data, MANUFACTURER_DATA_LENGTH));
+    uint8_t fullData[MANUFACTURER_DATA_LENGTH + 2];
+    fullData[0] = MANUFACTURER_ID & 0xFF;
+    fullData[1] = (MANUFACTURER_ID >> 8) & 0xFF;
+    memcpy(fullData + 2, data, MANUFACTURER_DATA_LENGTH);
 
+    pAdvertising->setManufacturerData(fullData, sizeof(fullData));
     pAdvertising->start();
 }
 
@@ -67,8 +72,15 @@ inline void muse_set_intensity(float intensity_percent) {
 }
 
 // ---------------- Start/Stop ----------------
-inline void muse_start() {_stopping = false; xTaskCreatePinnedToCore(muse_advertising_task, "muse_advertising_task", 4096, nullptr, 2, nullptr, 0);}
+inline void muse_start() {
+    _stopping = false;
+    xTaskCreatePinnedToCore(muse_advertising_task, "muse_advertising_task", 4096, nullptr, 2, nullptr, 0);
+}
 inline void muse_stop() {_stopping = true;}
 
 // ---------------- Init ----------------
-inline void muse_init() {}
+inline void muse_init() {
+    NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
+    pAdvertising->setMinInterval(0x06);
+    pAdvertising->setMaxInterval(0x12);
+}

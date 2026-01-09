@@ -13,6 +13,28 @@
 #define DEVICE_CHAR_RX  "45440002-0023-4BD4-BBD5-A6920E4C5653"
 #define DEVICE_CHAR_TX  "45440003-0023-4BD4-BBD5-A6920E4C5653"
 
+// ---------------- BLE Service functions ----------------
+inline void bluetooth_service_init() {
+    NimBLEDevice::init(DEVICE_NAME);
+
+    NimBLEServer *pServer = NimBLEDevice::createServer();
+    NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+    pAdvertising->enableScanResponse(true);
+    pAdvertising->setMinInterval(0x12);
+    pAdvertising->setMaxInterval(0x02);
+}
+
+inline void bluetooth_service_start() {
+    NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
+    pAdvertising->reset();
+    pAdvertising->setName(DEVICE_NAME);
+    pAdvertising->addServiceUUID(DEVICE_SERVICE);
+    NimBLEDevice::startAdvertising();
+}
+inline void bluetooth_service_stop() {NimBLEDevice::stopAdvertising();}
+inline void bluetooth_service_set_battery_level(float battery_voltage) {}
+inline void add_user_events_characteristic(NimBLEService *pService) {}
+
 static NimBLECharacteristic* blecRX;
 static NimBLECharacteristic* blecTX;
 static NimBLEServer* server;
@@ -33,18 +55,16 @@ inline std::string set_vibration_speed(const std::string& command);
 
 // ---------------- Server callbacks ----------------
 class MyServerCallbacks : public NimBLEServerCallbacks {
-    void onConnect(NimBLEServer* pServer) override {}
-    void onDisconnect(NimBLEServer* pServer) override { NimBLEDevice::getAdvertising()->start(); }
+    void onConnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo) override {}
+    void onDisconnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo, int reason) override { NimBLEDevice::getAdvertising()->start(); }
 };
 
 // ---------------- Characteristic callbacks ----------------
 class MyCharacteristicCallbacks : public NimBLECharacteristicCallbacks {
-    void onWrite(NimBLECharacteristic* c) override {
-        std::string message = c->getValue();
+    void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override {
+        std::string message = pCharacteristic->getValue();
         if (message.empty()) return;
-
         std::string response = generate_response(message);
-
         if (!response.empty() && blecTX) {
             blecTX->setValue(response);
             blecTX->notify();
@@ -66,12 +86,10 @@ inline std::string generate_response(const std::string& command) {
 inline std::string get_device_info() {
     std::string firmwareVersion = "11";
     std::string deviceType = "S";
-
     uint8_t mac[6];
     esp_read_mac(mac, ESP_MAC_WIFI_STA);
     char macAddressStr[18];
     sprintf(macAddressStr, "%02X%02X%02X%02X%02X%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-
     return deviceType + ":" + firmwareVersion + ":" + macAddressStr + ";";
 }
 
@@ -104,21 +122,14 @@ inline std::string set_vibration_speed(const std::string& command) {
 
 // ---------------- Lovense init ----------------
 inline void lovense_init() {
-    NimBLEDevice::init(DEVICE_NAME);
-
     server = NimBLEDevice::createServer();
     server->setCallbacks(new MyServerCallbacks());
-
     service = server->createService(DEVICE_SERVICE);
-
     blecRX = service->createCharacteristic(DEVICE_CHAR_RX, NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::WRITE_NR);
     blecTX = service->createCharacteristic(DEVICE_CHAR_TX, NIMBLE_PROPERTY::NOTIFY);
-
     blecRX->setCallbacks(new MyCharacteristicCallbacks());
-
     service->start();
-
     NimBLEAdvertising* advert = NimBLEDevice::getAdvertising();
     advert->addServiceUUID(DEVICE_SERVICE);
-    advert->start();
+    advert->setName(DEVICE_NAME);
 }
