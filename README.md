@@ -44,7 +44,7 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 - Select your board in platformio.ini or add a new one  
 - Flash the ESP32
 
-### 2. Running LS_Buttplug
+### 2. Running LS-Buttplug
 1. Run `LS-Buttplug.py`  
    - A Web page will open automatically or go to [http://localhost:5000](http://localhost:5000)  
 2. Select the COM port where your ESP32 is connected  
