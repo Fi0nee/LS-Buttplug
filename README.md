@@ -95,10 +95,9 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 ---
 
 ## ⚠️ Issues and Notes
-- There are errors in Intiface Central when connecting the device, but they do not affect functionality.  
 - Small vibration delays may occur when working with Intiface Central.  
 - Works with Lovense Remote app only on Android in offline mode. Sometimes works online only if you first disable internet — connect the device — then enable internet. Your toy may be disconnected at any time.  
-- On iOS the toy is not detected. 
+
 - If the device does not respond to commands, use the additional firmware to determine the HEX values [BLE-HEX-Picker](https://github.com/Fi0nee/BLE-HEX-Picker)
 
 ---
