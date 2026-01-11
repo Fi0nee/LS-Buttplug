@@ -29,16 +29,16 @@ jobs:
             mv partitions.bin partitions-$env.bin
             cd ../../../
 
-            mkdir -p firmware_zip/$env
-            mv .pio/build/$env/firmware-$env.bin firmware_zip/$env/
-            mv .pio/build/$env/bootloader-$env.bin firmware_zip/$env/
-            mv .pio/build/$env/partitions-$env.bin firmware_zip/$env/
+            mkdir -p /$env
+            mv .pio/build/$env/firmware-$env.bin /$env/
+            mv .pio/build/$env/bootloader-$env.bin /$env/
+            mv .pio/build/$env/partitions-$env.bin /$env/
           done
 
       - name: Package all firmware into ZIP
         run: |
           cd PlatformIO
-          zip -r LS-Buttplug-Firmware.zip firmware_zip
+          zip -r LS-Buttplug-Firmware.zip 
 
       - name: Upload ZIP artifact
         uses: actions/upload-artifact@v4
