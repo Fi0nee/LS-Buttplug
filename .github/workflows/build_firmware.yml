@@ -36,7 +36,7 @@ jobs:
           cd PlatformIO
           pio run -e ${{ matrix.env }}
 
-      # 5️⃣ Переименовываем firmware.bin по env, чтобы имена были уникальны
+      # 5️⃣ Переименовываем firmware, bootloader и partitions по env
       - name: Rename firmware, bootloader and partitions
         run: |
           cd PlatformIO/.pio/build/${{ matrix.env }}
@@ -44,36 +44,19 @@ jobs:
           mv bootloader.bin bootloader-${{ matrix.env }}.bin
           mv partitions.bin partitions-${{ matrix.env }}.bin
 
+      # 6️⃣ Создаём ZIP со всеми прошивками после сборки всех плат
+      - name: Package all firmware into ZIP
+        if: matrix.env == 'seeed_xiao_esp32c3'  # делаем только на последнем env
+        run: |
+          cd PlatformIO/.pio/build
+          zip -r ../LS-Buttplug-${GITHUB_REF_NAME}.zip *
 
-      # 6️⃣ Загружаем .bin как артефакт
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: firmware-${{ matrix.env }}
-          path: PlatformIO/.pio/build/${{ matrix.env }}/firmware-${{ matrix.env }}.bin
-
-      # 7️⃣ Создаём Release и добавляем прошивки
-      - name: Create GitHub Release and upload firmware
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            PlatformIO/.pio/build/esp32/firmware-esp32.bin
-            PlatformIO/.pio/build/esp32/bootloader-esp32.bin
-            PlatformIO/.pio/build/esp32/partitions-esp32.bin
-
-            PlatformIO/.pio/build/esp32c3/firmware-esp32c3.bin
-            PlatformIO/.pio/build/esp32c3/bootloader-esp32c3.bin
-            PlatformIO/.pio/build/esp32c3/partitions-esp32c3.bin
-
-            PlatformIO/.pio/build/esp32s3/firmware-esp32s3.bin
-            PlatformIO/.pio/build/esp32s3/bootloader-esp32s3.bin
-            PlatformIO/.pio/build/esp32s3/partitions-esp32s3.bin
-
-            PlatformIO/.pio/build/seeed_xiao_esp32c3/firmware-seeed_xiao_esp32c3.bin
-            PlatformIO/.pio/build/seeed_xiao_esp32c3/bootloader-seeed_xiao_esp32c3.bin
-            PlatformIO/.pio/build/seeed_xiao_esp32c3/partitions-seeed_xiao_esp32c3.bin
-          overwrite: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      # # 7️⃣ Загружаем ZIP в Release
+      # - name: Upload ZIP to Release
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     files: PlatformIO/LS-Buttplug-${GITHUB_REF_NAME}.zip
+      #     overwrite: true
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
