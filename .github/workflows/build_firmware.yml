@@ -52,3 +52,5 @@ jobs:
             PlatformIO/.pio/build/esp32c3/*.bin
             PlatformIO/.pio/build/seeed_xiao_esp32c3/*.bin
             PlatformIO/.pio/build/esp32s3/*.bin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
