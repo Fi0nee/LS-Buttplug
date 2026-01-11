@@ -125,5 +125,6 @@ If you have any questions or suggestions, you can contact me:
 If you like this project, support it ⭐
 
 ---
+![Downloads](https://img.shields.io/github/downloads/Fi0nee/LS-Buttplug/total?style=for-the-badge&color=brightgreen&logo=github)
 
 
