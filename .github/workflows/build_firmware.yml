@@ -37,10 +37,13 @@ jobs:
           pio run -e ${{ matrix.env }}
 
       # 5️⃣ Переименовываем firmware.bin по env, чтобы имена были уникальны
-      - name: Rename firmware
+      - name: Rename firmware, bootloader and partitions
         run: |
           cd PlatformIO/.pio/build/${{ matrix.env }}
           mv firmware.bin firmware-${{ matrix.env }}.bin
+          mv bootloader.bin bootloader-${{ matrix.env }}.bin
+          mv partitions.bin partitions-${{ matrix.env }}.bin
+
 
       # 6️⃣ Загружаем .bin как артефакт
       - name: Upload artifacts
