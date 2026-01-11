@@ -14,7 +14,7 @@ jobs:
         env:
           - esp32
           - esp32c3
-          - esp32s3
+          - eesp32s3
           - seeed_xiao_esp32c3
 
     steps:
