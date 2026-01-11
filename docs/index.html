@@ -7,10 +7,53 @@
     import 'https://cdn.jsdelivr.net/npm/esp-web-tools@9.4.0/+esm';
   </script>
   <style>
-    body { font-family: sans-serif; display:flex; flex-direction:column; align-items:center; padding:50px; background:#1a1a1a; color:#f5f5f5; }
-    h1 { color:#ff4081; margin-bottom:20px; }
-    select { padding:0.5rem 1rem; margin-bottom:20px; border-radius:6px; border:none; font-size:1rem; }
-    esp-web-install-button { --esp-btn-bg-color:#6200ea; --esp-btn-text-color:#fff; --esp-btn-hover-bg:#3700b3; border-radius:8px; padding:0.8rem 2rem; font-size:1.1rem; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 50px;
+      background: #1a1a1a;
+      color: #f5f5f5;
+    }
+
+    h1 {
+      color: #ff4081;
+      margin-bottom: 20px;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    select {
+      padding: 0.6rem 1.2rem;
+      margin-bottom: 25px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      background: #2c2c2c;
+      color: #fff;
+    }
+
+    esp-web-install-button {
+      --esp-btn-bg-color: #6200ea;
+      --esp-btn-text-color: #fff;
+      --esp-btn-hover-bg: #3700b3;
+      border-radius: 8px;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 0.85rem;
+      color: #888;
+    }
   </style>
 </head>
 <body>
@@ -24,7 +67,8 @@
     <option value="seeed_xiao_esp32c3">Seeed XIAO ESP32-C3</option>
   </select>
 
-  <esp-web-install-button id="installer" manifest="firmware/esp32/manifest.json">
+  <esp-web-install-button id="installer" 
+      manifest="https://fi0nee.github.io/LS-Buttplug/manifest.json">
     Install Firmware
   </esp-web-install-button>
 
@@ -34,9 +78,13 @@
 
     select.addEventListener('change', () => {
       const board = select.value;
-      // Меняем путь к manifest под выбранную плату
-      installer.setAttribute('manifest', `firmware/${board}/manifest.json`);
+      // Передаем выбранную плату в esp-web-tools
+      installer.flashOptions = { target: board };
     });
   </script>
+
+  <footer>
+    Firmware installer powered by ESP Web Tools
+  </footer>
 </body>
 </html>
