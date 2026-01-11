@@ -1,0 +1,44 @@
+name: Build ESP32 Firmware
+
+on:
+  push:
+    tags:
+      - 'v*'        # сборка при пуше тега типа v1.2.3
+  workflow_dispatch:  # возможность запускать вручную
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env:
+          - esp32
+          - esp32c3
+          - esp32s3
+          - seeed_xiao_esp32c3
+
+    steps:
+      # 1️⃣ Клонируем репозиторий
+      - uses: actions/checkout@v4
+
+      # 2️⃣ Устанавливаем Python (для PlatformIO)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3️⃣ Устанавливаем PlatformIO
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      # 4️⃣ Сборка прошивки
+      - name: Build firmware
+        run: |
+          cd PlatformIO
+          pio run -e ${{ matrix.env }}
+
+      # 5️⃣ Загружаем .bin как артефакт
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ matrix.env }}
+          path: PlatformIO/.pio/build/${{ matrix.env }}/*.bin
