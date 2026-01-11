@@ -29,7 +29,7 @@ The project supports 4 operation modes and provides smooth power control 0-9
 - **Support for Lovense games on PC**  
 - **Compatibility with [Buttplug.io](https://buttplug.io) / [Intiface Central](https://intiface.com/)** on both PC and mobile devices  
 - **Support for [XToys.App](https://xtoys.app)**  
-- **Lovense Remote support (limited)
+- Lovense Remote support (limited)
 
 ---
 
