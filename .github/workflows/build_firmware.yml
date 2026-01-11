@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'v*'        # сборка при пуше тега типа v1.2.3
-  workflow_dispatch:  # возможность запускать вручную
+  workflow_dispatch:  # возможность запуска вручную
 
 jobs:
   build:
@@ -36,23 +36,29 @@ jobs:
           cd PlatformIO
           pio run -e ${{ matrix.env }}
 
-      # 5️⃣ Загружаем .bin как артефакт
+      # 5️⃣ Переименовываем firmware.bin по env, чтобы имена были уникальны
+      - name: Rename firmware
+        run: |
+          cd PlatformIO/.pio/build/${{ matrix.env }}
+          mv firmware.bin firmware-${{ matrix.env }}.bin
+
+      # 6️⃣ Загружаем .bin как артефакт
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: firmware-${{ matrix.env }}
-          path: PlatformIO/.pio/build/${{ matrix.env }}/*.bin
-      # 6️⃣ Создаём Release и добавляем прошивки
+          path: PlatformIO/.pio/build/${{ matrix.env }}/firmware-${{ matrix.env }}.bin
+
+      # 7️⃣ Создаём Release и добавляем прошивки
       - name: Create GitHub Release and upload firmware
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            PlatformIO/.pio/build/esp32/firmware.bin
-            PlatformIO/.pio/build/esp32c3/firmware.bin
-            PlatformIO/.pio/build/esp32s3/firmware.bin
-            PlatformIO/.pio/build/seeed_xiao_esp32c3/firmware.bin
+            PlatformIO/.pio/build/esp32/firmware-esp32.bin
+            PlatformIO/.pio/build/esp32c3/firmware-esp32c3.bin
+            PlatformIO/.pio/build/esp32s3/firmware-esp32s3.bin
+            PlatformIO/.pio/build/seeed_xiao_esp32c3/firmware-seeed_xiao_esp32c3.bin
           overwrite: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
