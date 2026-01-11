@@ -59,9 +59,21 @@ jobs:
         with:
           files: |
             PlatformIO/.pio/build/esp32/firmware-esp32.bin
+            PlatformIO/.pio/build/esp32/bootloader-esp32.bin
+            PlatformIO/.pio/build/esp32/partitions-esp32.bin
+
             PlatformIO/.pio/build/esp32c3/firmware-esp32c3.bin
+            PlatformIO/.pio/build/esp32c3/bootloader-esp32c3.bin
+            PlatformIO/.pio/build/esp32c3/partitions-esp32c3.bin
+
             PlatformIO/.pio/build/esp32s3/firmware-esp32s3.bin
+            PlatformIO/.pio/build/esp32s3/bootloader-esp32s3.bin
+            PlatformIO/.pio/build/esp32s3/partitions-esp32s3.bin
+
             PlatformIO/.pio/build/seeed_xiao_esp32c3/firmware-seeed_xiao_esp32c3.bin
+            PlatformIO/.pio/build/seeed_xiao_esp32c3/bootloader-seeed_xiao_esp32c3.bin
+            PlatformIO/.pio/build/seeed_xiao_esp32c3/partitions-seeed_xiao_esp32c3.bin
           overwrite: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
