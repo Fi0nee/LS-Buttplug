@@ -1,64 +1,46 @@
 name: Build ESP32 Firmware
 
 on:
-  workflow_dispatch:  # ручной запуск
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        env:
-          - esp32
-          - esp32c3
-          - esp32s3
-          - seeed_xiao_esp32c3
-
     steps:
-      # 1️⃣ Клонируем репозиторий
       - uses: actions/checkout@v4
 
-      # 2️⃣ Устанавливаем Python
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3️⃣ Устанавливаем PlatformIO
       - name: Install PlatformIO
         run: pip install platformio
 
-      # 4️⃣ Сборка прошивки
-      - name: Build firmware
+      - name: Build all boards
         run: |
           cd PlatformIO
-          pio run -e ${{ matrix.env }}
+          for env in esp32 esp32c3 esp32s3 seeed_xiao_esp32c3; do
+            echo "Building $env..."
+            pio run -e $env
 
-      # 5️⃣ Переименовываем файлы по плате
-      - name: Rename firmware, bootloader and partitions
-        run: |
-          cd PlatformIO/.pio/build/${{ matrix.env }}
-          mv firmware.bin firmware-${{ matrix.env }}.bin
-          mv bootloader.bin bootloader-${{ matrix.env }}.bin
-          mv partitions.bin partitions-${{ matrix.env }}.bin
+            cd .pio/build/$env
+            mv firmware.bin firmware-$env.bin
+            mv bootloader.bin bootloader-$env.bin
+            mv partitions.bin partitions-$env.bin
+            cd ../../../
 
-      # 6️⃣ Создаём папку для каждой платы и перемещаем файлы
-      - name: Organize firmware into folders
-        run: |
-          mkdir -p PlatformIO/firmware_zip/${{ matrix.env }}
-          mv PlatformIO/.pio/build/${{ matrix.env }}/firmware-${{ matrix.env }}.bin PlatformIO/firmware_zip/${{ matrix.env }}/
-          mv PlatformIO/.pio/build/${{ matrix.env }}/bootloader-${{ matrix.env }}.bin PlatformIO/firmware_zip/${{ matrix.env }}/
-          mv PlatformIO/.pio/build/${{ matrix.env }}/partitions-${{ matrix.env }}.bin PlatformIO/firmware_zip/${{ matrix.env }}/
+            mkdir -p firmware_zip/$env
+            mv .pio/build/$env/firmware-$env.bin firmware_zip/$env/
+            mv .pio/build/$env/bootloader-$env.bin firmware_zip/$env/
+            mv .pio/build/$env/partitions-$env.bin firmware_zip/$env/
+          done
 
-      # 7️⃣ После сборки всех плат делаем ZIP
       - name: Package all firmware into ZIP
-        if: matrix.env == 'seeed_xiao_esp32c3'
         run: |
           cd PlatformIO
           zip -r LS-Buttplug-Firmware.zip firmware_zip
-          
-      # 8️⃣ Загружаем ZIP как артефакт
+
       - name: Upload ZIP artifact
-        if: matrix.env == 'seeed_xiao_esp32c3'
         uses: actions/upload-artifact@v4
         with:
           name: LS-Buttplug-Firmware
