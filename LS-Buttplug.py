@@ -28,7 +28,7 @@ def safe_send(level):
         pass
 
 lovense = LovenseLib(send_func=safe_send)
-keyboard_module = KeyboardModule(send_func=lambda level: safe_send(round(level / 7 * 20)))
+keyboard_module = KeyboardModule(send_func=lambda level: safe_send(round(level / 9 * 20)))
 
 config = configparser.ConfigParser()
 
@@ -67,8 +67,8 @@ def index():
 def set_power_level():
     try:
         level = int(request.form.get('level', '0'))
-        level = max(0, min(7, level))
-        safe_send(round(level / 7 * 20))
+        level = max(0, min(9, level))
+        safe_send(round(level / 9 * 20))
     except ValueError:
         pass
     return '', 204

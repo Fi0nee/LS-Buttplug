@@ -24,7 +24,7 @@ class KeyboardModule:
 
     def add_binding(self, key: str, level: int):
         key = key.lower()
-        if 0 <= level <= 7:
+        if 0 <= level <= 9:
             self.key_bindings[key] = level
 
     def remove_binding(self, key: str):

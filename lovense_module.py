@@ -6,7 +6,7 @@ import configparser
 import os
 import socket
 
-MAX_LEVEL_SPOUSE = 7
+MAX_LEVEL_SPOUSE = 9
 MAX_LEVEL_LOVENSE = 14
 
 class LovenseLib:
@@ -36,7 +36,7 @@ class LovenseLib:
 
     def send_to_spouse(self, level):
         try:
-            scaled = round(level / 7 * 20)  # преобразуем в 0–20
+            scaled = round(level / 9 * 20)  # преобразуем в 0–20
             msg = f"Vibrate:{scaled};"
             print(f"[DEBUG] Sending to ESP32: {msg}")
             self.send_func(msg)
@@ -130,7 +130,7 @@ class LovenseLib:
                 self.stop_pattern()
                 try:
                     level = int(action.split(":")[1])
-                    scaled = round(level / 7 * 20)
+                    scaled = round(level / 9 * 20)
                     msg = f"Vibrate:{scaled};"
                     print(f"[DEBUG] Function Vibrate command: {msg}")
                     self.send_func(msg)

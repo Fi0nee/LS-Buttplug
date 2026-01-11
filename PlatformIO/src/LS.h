@@ -16,14 +16,18 @@ static bool _stopping = false;
 // ---------------- Channel values ----------------
 static constexpr uint32_t CHANNELS[] = {
     0xE50000, // Stop
+
     0xF40000, // L1
     0xF70000, // L2
     0xF60000, // L3
     0xF10000, // L4
-    0xF30000, // L5
-    0xE70000, // L6
-    0xE60000, // L7
+    0xF00000, // L5 (New)
+    0xF30000, // L6
+    0xE70000, // L7
+    0xFC0000, // L8 (New)
+    0xE60000, // L9
 };
+
 
 // ---------------- Set manufacturer data ----------------
 inline void set_manufacturer_data(uint8_t index) {
@@ -68,7 +72,14 @@ inline void muse_set_intensity(float intensity_percent) {
     if (isnan(intensity_percent) || intensity_percent < 0.0f) intensity_percent = 0.0f;
     else if (intensity_percent > 1.0f) intensity_percent = 1.0f;
 
-    _intensity_value = static_cast<uint8_t>(round(intensity_percent * (sizeof(CHANNELS)/sizeof(CHANNELS[0]) - 1)));
+    // Convert 20 Lovense levels (0-19) to our 9 vibration levels (1-9) + Stop (0)
+    if (intensity_percent == 0.0f) {
+        _intensity_value = 0; // Stop
+    } else {
+        // Map 0.05-1.0 range to 1-9 indices (our vibration levels)
+        _intensity_value = static_cast<uint8_t>(round(intensity_percent * 8.0f)) + 1;
+        if (_intensity_value > 9) _intensity_value = 9;
+    }
 }
 
 // ---------------- Start/Stop ----------------

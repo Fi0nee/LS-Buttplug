@@ -279,6 +279,7 @@
           <select id="kmLevel" class="km-select">
             <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
             <option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option>
+            <option value="8">8</option><option value="9">9</option>
           </select>
           <button class="km-add" id="kmAddBtn">Add</button>
         </div>
@@ -307,7 +308,7 @@
     function updateSliderVisual(n){
       currentLevel = n;
       const el = document.getElementById('sliderLevel');
-      el.style.height = (n/7*100) + '%';
+      el.style.height = (n/9*100) + '%';
       el.style.background = `linear-gradient(135deg, ${themeColor1}, ${themeColor2})`;
       animateGlow();
     }
@@ -328,8 +329,8 @@
     function handleSliderClick(e){
       const s = document.getElementById('powerSlider');
       const y = e.clientY - s.getBoundingClientRect().top;
-      let lvl = Math.round((1 - y / s.offsetHeight) * 7);
-      lvl = Math.max(0, Math.min(7, lvl));
+      let lvl = Math.round((1 - y / s.offsetHeight) * 9);
+      lvl = Math.max(0, Math.min(9, lvl));
       setSliderAndSend(lvl);
     }
 
@@ -344,8 +345,8 @@
       if(!isDragging) return;
       const s = document.getElementById('powerSlider');
       const y = e.clientY - s.getBoundingClientRect().top;
-      let lvl = Math.round((1 - y / s.offsetHeight) * 7);
-      lvl = Math.max(0, Math.min(7, lvl));
+      let lvl = Math.round((1 - y / s.offsetHeight) * 9);
+      lvl = Math.max(0, Math.min(9, lvl));
       setSliderAndSend(lvl);
     }
 
@@ -470,7 +471,7 @@
       } else {
         b.classList.add('active');
         setRandomButtonActive(b, true);
-        randTimer = setInterval(()=>{ const val = Math.floor(Math.random()*8); setSliderAndSend(val); }, 1000);
+        randTimer = setInterval(()=>{ const val = Math.floor(Math.random()*10); setSliderAndSend(val); }, 1000);
       }
       randActive = !randActive;
     }
@@ -485,12 +486,12 @@
       } else {
         b.classList.add('active');
         setRandomButtonActive(b, true);
-        let target = Math.floor(Math.random()*8);
+        let target = Math.floor(Math.random()*10);
         smoothTimer = setInterval(()=>{
           if(currentLevel !== target){
             currentLevel += currentLevel < target ? 1 : -1;
             setSliderAndSend(currentLevel);
-          } else target = Math.floor(Math.random()*8);
+          } else target = Math.floor(Math.random()*10);
         }, Math.floor(Math.random()*150)+50);
       }
       smoothActive = !smoothActive;
@@ -506,7 +507,7 @@
       } else {
         b.classList.add('active');
         setRandomButtonActive(b, true);
-        rand3Timer = setInterval(()=>{ const v = Math.floor(Math.random()*8); setSliderAndSend(v); }, 200);
+        rand3Timer = setInterval(()=>{ const v = Math.floor(Math.random()*10); setSliderAndSend(v); }, 200);
       }
       rand3Active = !rand3Active;
     }
@@ -524,9 +525,9 @@
         let phase = 0, v = 0, cnt = 0;
         function step(){
           switch(phase){
-            case 0: v++; if(v>7){v=7;phase=1} setSliderAndSend(v); rand4Timer = setTimeout(step,100); break;
+            case 0: v++; if(v>9){v=9;phase=1} setSliderAndSend(v); rand4Timer = setTimeout(step,100); break;
             case 1: v--; if(v<0){v=0;phase=2;cnt=0} setSliderAndSend(v); rand4Timer = setTimeout(step,100); break;
-            case 2: v = (cnt%2===0)?6:3; setSliderAndSend(v); cnt++; if(cnt>=6){phase=3;v=7} rand4Timer = setTimeout(step,150); break;
+            case 2: v = (cnt%2===0)?8:4; setSliderAndSend(v); cnt++; if(cnt>=6){phase=3;v=9} rand4Timer = setTimeout(step,150); break;
             case 3: setSliderAndSend(v); rand4Timer = setTimeout(()=>{phase=0;v=0;step()},1000); break;
           }
         }
@@ -560,7 +561,7 @@
       if(!raw) return alert('Select key');
       const key = raw[0].toLowerCase();
       const lvl = parseInt(km.levelSelect.value,10);
-      if(Number.isNaN(lvl) || lvl<0 || lvl>7) return alert('Incorrect level');
+      if(Number.isNaN(lvl) || lvl<0 || lvl>9) return alert('Incorrect level');
       km.bindings[key] = lvl;
       km.keyInput.value = '';
       renderKmList();
@@ -625,7 +626,7 @@
     document.addEventListener('wheel', e=>{
       let l = currentLevel;
       l += e.deltaY < 0 ? 1 : -1;
-      l = Math.max(0, Math.min(7, l));
+      l = Math.max(0, Math.min(9, l));
       setSliderAndSend(l);
       e.preventDefault();
     }, {passive:false});

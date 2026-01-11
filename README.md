@@ -17,7 +17,7 @@
 The **LS-Buttplug** project is designed to control vibrations of cheap Chinese sex toys that work with the **MuSe / Love Spouse** app.  
 The goal of the project is to expand the functionality of available devices, since most cheap toys have limited software, and the **Love Spouse** app works with restrictions and failures in some regions.
 
-The project supports 4 operation modes and provides smooth power control 0-7, which is limited by the device firmware.
+The project supports 4 operation modes and provides smooth power control 0-9
 
 ---
 ![Main Interface](img/web.png)
@@ -29,6 +29,7 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 - **Support for Lovense games on PC**  
 - **Compatibility with [Buttplug.io](https://buttplug.io) / [Intiface Central](https://intiface.com/)** on both PC and mobile devices  
 - **Support for [XToys.App](https://xtoys.app)**  
+- **Lovense Remote support (limited)
 
 ---
 
@@ -45,6 +46,11 @@ The project supports 4 operation modes and provides smooth power control 0-7, wh
 - Flash the ESP32
 
 ### 2. Running LS-Buttplug
+
+```bash
+pip install -r requirements.txt
+```
+
 1. Run `LS-Buttplug.py`  
    - A Web page will open automatically or go to [http://localhost:5000](http://localhost:5000)  
 2. Select the COM port where your ESP32 is connected  
@@ -116,10 +122,7 @@ If you have any questions or suggestions, you can contact me:
 - 📧 Email: [miha.shym@icloud.com](mailto:miha.shym@icloud.com)  
 - Please include in subject: `LS-Buttplug`  
 
-If you like the project and want to support development:  
-- ☕BTC: `1KhWiRJhniWBgFffaZkWk7EXuLrK1qjN35`  
-- ☕USDT (TRC20): `TBG5q6y9f8EE7p8e9naaQKP2UgvjJD5tLT`  
-- ☕TON: `UQC-FEFn0TojwtGXogMJrnde7TZtJyNZNGa5awliEl03_off`  
+If you like this project, support it ⭐
 
 ---
 
