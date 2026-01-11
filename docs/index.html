@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LS-Buttplug Web Flasher</title>
+<script src="flash.js"></script>
+</head>
+<body>
+<h1>LS-Buttplug Web Flasher</h1>
+<select id="boardSelect">
+  <option value="esp32">ESP32</option>
+  <option value="esp32c3">ESP32-C3</option>
+  <option value="esp32s3">ESP32-S3</option>
+  <option value="seeed_xiao_esp32c3">Seeed XIAO ESP32-C3</option>
+</select>
+<button onclick="connectAndFlash()">Connect & Flash</button>
+<progress id="progress" max="100" value="0"></progress>
+</body>
+</html>
