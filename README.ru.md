@@ -29,7 +29,7 @@
 - **Поддержка Lovense игр на ПК**
 - **Совместимость с [Buttplug.io](https://buttplug.io) / [Intiface Central](https://intiface.com/)** как на ПК так и мобильных устройствах
 - **Поддержка [XToys.App](https://xtoys.app)** 
-- **Поддержка Lovense Remote (ограничено)
+- Поддержка Lovense Remote (ограничено)
 
 ---
 
