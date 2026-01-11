@@ -48,9 +48,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            PlatformIO/.pio/build/esp32/*.bin
-            PlatformIO/.pio/build/esp32c3/*.bin
-            PlatformIO/.pio/build/seeed_xiao_esp32c3/*.bin
-            PlatformIO/.pio/build/esp32s3/*.bin
+            PlatformIO/.pio/build/esp32/firmware.bin
+            PlatformIO/.pio/build/esp32c3/firmware.bin
+            PlatformIO/.pio/build/esp32s3/firmware.bin
+            PlatformIO/.pio/build/seeed_xiao_esp32c3/firmware.bin
+          overwrite: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
